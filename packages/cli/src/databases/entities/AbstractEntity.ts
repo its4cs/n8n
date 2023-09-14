@@ -1,11 +1,5 @@
 import type { ColumnOptions } from 'typeorm';
-import {
-	BeforeInsert,
-	BeforeUpdate,
-	CreateDateColumn,
-	PrimaryColumn,
-	UpdateDateColumn,
-} from 'typeorm';
+import { BeforeInsert, CreateDateColumn, PrimaryColumn, UpdateDateColumn } from 'typeorm';
 import config from '@/config';
 import { generateNanoId } from '../utils/generators';
 
@@ -49,16 +43,8 @@ function mixinTimestamps<T extends Constructor<{}>>(base: T) {
 		@CreateDateColumn(tsColumnOptions)
 		createdAt: Date;
 
-		@UpdateDateColumn({
-			...tsColumnOptions,
-			onUpdate: timestampSyntax,
-		})
+		@UpdateDateColumn(tsColumnOptions)
 		updatedAt: Date;
-
-		@BeforeUpdate()
-		setUpdateDate(): void {
-			this.updatedAt = new Date();
-		}
 	}
 	return Derived;
 }
